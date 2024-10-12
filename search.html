@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Search Definition</title>
+    <script>
+        function searchDefinition() {
+            let wordInput = document.getElementById('searchWord').value;
+            wordInput = wordInput.toLowerCase();
+
+
+            if (!wordInput) {
+                alert('Please enter a word to search!');
+                return;
+            }
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', `https://comp4537-team4.onrender.com/api/definitions?word=${wordInput}`, true);
+
+            xhr.onload = function () {
+                const response = JSON.parse(xhr.responseText);
+                if (response.definition) {
+                    alert(`${response.word} : ${response.definition}`);
+                } else {
+                    alert(response.message || response.error);
+                }
+            };
+
+            xhr.onerror = function () {
+                alert('An error occurred while searching for the definition.');
+            };
+
+            xhr.send();
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Search for a Word Definition</h1>
+        <input type="text" id="searchWord" placeholder="Enter a word" required>
+        <button onclick="searchDefinition()">Search</button>
+        <p class="info">Type a word and click 'Search' to find its definition.</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Store</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Store a Word Definition</h1>
+        <input type="text" id="word" placeholder="Enter word" required>
+        <textarea id="definition" placeholder="Enter definition" required></textarea>
+        <button onclick="storeDefiniton()">Submit</button>
+        <p class="info">Enter the word and its definition, then click 'Submit' to store it.</p>
+    </div>
+    <script>
+        function storeDefiniton() {
+            let word = document.getElementById('word').value;
+            let definition = document.getElementById('definition').value;
+            
+             // Convert to lowercase before sending
+            word = word.toLowerCase();
+            definition = definition.toLowerCase();
+
+            const data = {
+                word: word,
+                definition: definition
+            }
+
+            if(!word || !definition){
+                alert("Please enter the values")
+            }
+
+            const json_data = JSON.stringify(data);
+            console.log(json_data);
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'https://comp4537-team4.onrender.com/api/definitions', true);
+            xhr.setRequestHeader('Content-type', 'application/json');
+            xhr.onload = function() {
+                const response = JSON.parse(xhr.responseText);
+                alert(response.message || response.error);
+            }
+            xhr.send(json_data);
+
+        }
+    </script>
+</body>
+</html>
